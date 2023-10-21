@@ -86,7 +86,6 @@ const useTicTacToeGameState = (initialPlayer) => {
 const TicTacToe = () => {
   const { tiles, currentPlayer, winner, gameEnded, setTileTo, restart } =
     useTicTacToeGameState('X');
-  console.log(winner);
 
   return (
     <div className="tictactoe">
