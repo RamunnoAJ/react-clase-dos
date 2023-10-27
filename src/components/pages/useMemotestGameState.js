@@ -45,6 +45,13 @@ const useMemotestGameState = () => {
       }
     }
   };
+
+  const onRestart = () => {
+    setTiles(createTiles);
+    setFlipped([]);
+    setWonPairs([]);
+  };
+
   return {
     tiles,
     flipped,
