@@ -24,6 +24,27 @@ const useMemotestGameState = () => {
   const [wonPairs, setWonPairs] = useState([]);
   const gameEnded = wonPairs.length === tiles.length / 2;
 
+  const onClickTile = (key) => {
+    if (!flipped.includes(key) && flipped.length < MAXIMUM_FLIPPED) {
+      setFlipped([...flipped, key]);
+
+      const newLength = flipped.length + 1;
+
+      if (newLength === MAXIMUM_FLIPPED) {
+        const firstColor = flipped[0].split('-')[0];
+        const secondColor = key.split('-')[0];
+
+        if (firstColor === secondColor) {
+          setWonPairs([...wonPairs, firstColor]);
+          setFlipped([]);
+        } else {
+          setTimeout(() => {
+            setFlipped([]);
+          }, 1000);
+        }
+      }
+    }
+  };
   return {
     tiles,
     flipped,
