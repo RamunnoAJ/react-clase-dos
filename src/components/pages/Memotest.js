@@ -22,3 +22,19 @@ Square.propTypes = {
   onClick: PropTypes.func,
   active: PropTypes.bool.isRequired,
 };
+
+const useMemotestGameState = () => {
+  const [tiles, setTiles] = useState([...COLORS, ...COLORS]);
+  const [gameEnded, setGameEnded] = useState(false);
+
+  const shuffleTiles = () => {
+    const newTiles = [...tiles];
+    for (let i = newTiles.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [newTiles[i], newTiles[j]] = [newTiles[j], newTiles[i]];
+    }
+    setTiles(newTiles);
+  };
+
+  return { tiles, shuffleTiles, gameEnded };
+};
