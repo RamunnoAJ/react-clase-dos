@@ -1,72 +1,69 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import useMemotestGameState from './useMemotestGameState.js';
 import './Memotest.css';
 
-const COLORS = ['black', 'red', 'blue', 'green', 'yellow', 'violet'];
-
-const Square = ({ color, onClick = () => {} }) => {
-  const [active, setActive] = useState(true);
-
+const Tile = ({ color, onClick, flipped, disabled }) => {
   return (
     <div
       onClick={onClick}
-      className={cx('block', { 'block--inactive': !active })}
-      style={{ backgroundColor: color }}
+      className={cx('block', color, {
+        'block--flipped': flipped,
+        disabled: disabled,
+      })}
     />
   );
 };
 
-Square.propTypes = {
-  color: PropTypes.oneOf(COLORS),
+Tile.propTypes = {
+  color: PropTypes.string,
   onClick: PropTypes.func,
-  active: PropTypes.bool.isRequired,
-};
-
-const useMemotestGameState = () => {
-  const [tiles, setTiles] = useState([...COLORS, ...COLORS]);
-  const [gameEnded, setGameEnded] = useState(false);
-
-  const shuffleTiles = () => {
-    const newTiles = [...tiles];
-    for (let i = newTiles.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [newTiles[i], newTiles[j]] = [newTiles[j], newTiles[i]];
-    }
-    setTiles(newTiles);
-  };
-
-  return { tiles, shuffleTiles, gameEnded };
+  flipped: PropTypes.bool,
+  disabled: PropTypes.bool,
 };
 
 const Memotest = () => {
-  const { tiles, shuffleTiles } = useMemotestGameState();
+  const { tiles, flipped, onClickTile, wonPairs, onRestart, gameEnded } =
+    useMemotestGameState();
 
-  useEffect(() => {
-    shuffleTiles();
-  }, []);
+  const renderTiles = () => {
+    const rows = [];
+
+    for (let i = 0; i < tiles.length; i += 4) {
+      const rowElements = tiles.slice(i, i + 4).map((tile, index) => (
+        <div className="memotest-col" key={index}>
+          <Tile
+            color={tile.color}
+            key={tile.key}
+            onClick={() => onClickTile(tile.key)}
+            flipped={flipped.includes(tile.key)}
+            disabled={wonPairs.includes(tile.color)}
+          />
+        </div>
+      ));
+
+      const $row = (
+        <div className="memotest-row" key={i}>
+          {rowElements}
+        </div>
+      );
+      rows.push($row);
+    }
+
+    return rows;
+  };
 
   return (
     <div className="memotest-board">
-      <div className="memotest-row">
-        <Square color={tiles[0]} />
-        <Square color={tiles[1]} />
-        <Square color={tiles[2]} />
-        <Square color={tiles[3]} />
-      </div>
-      <div className="memotest-row">
-        <Square color={tiles[4]} />
-        <Square color={tiles[5]} />
-        <Square color={tiles[6]} />
-        <Square color={tiles[7]} />
-      </div>
-      <div className="memotest-row">
-        <Square color={tiles[8]} />
-        <Square color={tiles[9]} />
-        <Square color={tiles[10]} />
-        <Square color={tiles[11]} />
-      </div>
-      <div className="" onClick={shuffleTiles}>Reiniciar juego</div>
+      {gameEnded && (
+        <div className="memotest-end">Felicitaciones! Has ganado!</div>
+      )}
+      {renderTiles()}
+
+      <button className="memotest-button" onClick={onRestart}>
+        Volver a jugar
+      </button>
     </div>
   );
 };
