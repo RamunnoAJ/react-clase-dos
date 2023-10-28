@@ -1,0 +1,109 @@
+.memotest-board {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.memotest-row {
+  --bs-gutter-x: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  margin-inline: calc(-0.5 * var(--bs-gutter-x));
+}
+
+.memotest-row > * {
+  width: 100%;
+  max-width: 100%;
+}
+
+.memotest-col {
+  flex: 1 0 0%;
+  height: 20vh;
+  padding: 1px;
+  border: 1px solid gray;
+}
+
+.memotest-button {
+  width: 100%;
+  text-transform: uppercase;
+  font-weight: 600;
+  max-width: 200px;
+  margin: 1rem auto;
+  padding: 0.5rem 1.25rem;
+  background-color: #365324;
+  border: none;
+  border-radius: 0.25rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.memotest-button:hover {
+  background-color: #507c36;
+  cursor: pointer;
+}
+
+.memotest-end {
+  text-align: center;
+  font-size: 1.25rem;
+  margin: 1rem auto;
+}
+
+.block {
+  opacity: 0;
+  height: 100%;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.block--flipped {
+  opacity: 1;
+}
+
+.disabled {
+  background-color: #777 !important;
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.hidden {
+  display: none;
+}
+
+.white {
+  background-color: #fff;
+}
+
+.black {
+  background-color: #000;
+}
+
+.red {
+  background-color: #f00;
+}
+
+.green {
+  background-color: #0f0;
+}
+
+.blue {
+  background-color: #00f;
+}
+
+.yellow {
+  background-color: #ff0;
+}
+
+.violet {
+  background-color: #f0f;
+}
+
+.column {
+  padding: 1px;
+  border: 1px solid gray;
+  height: 20vh;
+}
+
+@media (min-width: 75rem) {
+  .column {
+    padding: 5px;
+  }
+}
